@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vue.js To-Do App</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    #todo-container {
+      width: 300px;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 20px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .task {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 10px;
+      margin-bottom: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .task input[type="checkbox"] {
+      margin-right: 8px;
+    }
+
+    .task input[type="text"] {
+      flex: 1;
+      margin-right: 8px;
+      border: none;
+      padding: 8px;
+      border-radius: 4px;
+    }
+
+    .task button {
+      background-color: #dc3545;
+      color: #fff;
+      border: none;
+      padding: 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+
+  <script>
+    new Vue({
+      el: '#app',
+      data: {
+        tasks: [],
+        newTask: ''
+      },
+      methods: {
+        addTask: function() {
+          if (this.newTask.trim() !== '') {
+            this.tasks.push({
+              text: this.newTask,
+              completed: false
+            });
+            this.newTask = ''; // Clear the input field
+          }
+        },
+        deleteTask: function(index) {
+          this.tasks.splice(index, 1);
+        }
+      },
+      template: `
+        <div id="todo-container">
+          <h2>My Daily To-Do App</h2>
+          <div v-for="(task, index) in tasks" :key="index" class="task">
+            <input type="checkbox" v-model="task.completed">
+            <input type="text" v-model="task.text" :class="{ 'completed': task.completed }">
+            <button @click="deleteTask(index)">Delete</button>
+          </div>
+          <div>
+            <input type="text" v-model="newTask" placeholder="Add a new task">
+            <button @click="addTask">Add</button>
+          </div>
+        </div>
+      `
+    });
+  </script>
+</body>
+</html>
